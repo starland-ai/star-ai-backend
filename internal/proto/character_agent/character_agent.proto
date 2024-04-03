@@ -1,0 +1,73 @@
+syntax = "proto3";
+package agent;
+option go_package = "protos/character_agent";
+
+message ChatMessage{
+    string role = 1;
+    string content = 2;
+}
+
+message ImageMeta{
+    string name = 1;
+    string thumbnail = 2;
+    bool enable3D = 3;
+    string id = 4;
+}
+
+message CharacterSetting{
+    string name = 1;
+    string gender = 2;
+    string description = 3;
+    map<string, string> tags = 4;
+    string introduction = 5;
+}
+
+message ChatCompletionRequest{
+    string session_id = 1;
+    ChatMessage message = 2;
+}
+
+message ChatCompletionResponse{
+    uint32 code = 1; // resp code, success: 0, failed: <> 0
+    string err_msg = 2;
+    repeated ChatMessage messages = 3;
+    repeated ImageMeta image_metas = 4; 
+    bool need_confirm = 5; 
+    string confirm_type = 6;
+}
+
+message ConfirmCharacterSettingRequest{  
+    string session_id = 1;
+}
+
+message ConfirmCharacterSettingResponse{
+    uint32 code = 1; // resp code, success: 0, failed: <> 0
+    string err_msg = 2;
+    repeated ChatMessage messages = 3; 
+    bool need_confirm = 4; 
+    string confirm_type = 5; 
+    CharacterSetting character_setting = 6;
+}
+
+message ChatCompletionStreamResponseChunk{
+    uint32 chunk_type = 1; // chat chunk = 1; image chunk = 2; need confirm chunk = 3; setting chunk = 4;
+    uint32 chunk_session_index = 2; 
+    // { "name": "xxxx", "gender": "xxxx", "description": "xxxx" }
+    // { "name": "xxxx", "gender": "xxxx", "description": "xxxx123455" }
+    ChatMessage chat_chunk = 3; // I am
+    repeated ImageMeta image_chunk = 4;
+    bool need_confirm_chunk = 5;
+    string setting_chunk = 6;
+}
+
+message ChatCompletionStreamResponse{
+    uint32 code = 1; // resp code, success: 0, failed: <> 0
+    string err_msg = 2;
+    ChatCompletionStreamResponseChunk chunk = 3;
+}
+
+service Agent{
+    rpc ChatCompletions(ChatCompletionRequest) returns (ChatCompletionResponse) {}
+    rpc ChatCompletionsStream(ChatCompletionRequest) returns (stream ChatCompletionStreamResponse) {}
+    rpc ConfirmCharacterSetting(ConfirmCharacterSettingRequest) returns (ConfirmCharacterSettingResponse) {}
+}

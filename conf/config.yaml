@@ -1,0 +1,68 @@
+debug: true
+env: test
+feiShuAlertUrl: your_url
+redirectUr: your_url
+http:
+  addr: 0.0.0.0:8083
+  read_timeout: 300
+  write_timeout: 300
+https:
+  addr: "0.0.0.0:8084"
+  read_timeout: 300
+  write_timeout: 300
+  pem: "./conf/test.com.cer"
+  key: "./conf/test.com.key"
+data:
+  db:
+    source: your_url
+  redis:
+    host: your_redis
+    password: your_redis_password
+    expiration: 3600
+account:
+  token: your_token
+  endpoint: your_url
+oauth:
+  secret: "Secret-session-key"
+  debug:
+    cookie: "test"
+  google:
+    client_id: "your_id"
+    key: "your_key"
+    callback_url: "your_url"
+  twitter:
+    secret: "test"
+    key: "test"
+    callback_url: "your_url"
+chatCompletions: 
+  endpoint: your_url
+chat: 
+  endpoint: your_url
+  chatLimit: 100
+voice:
+  endpoint: your_url
+file: 
+  imagesEndpoint: your_url
+  voiceEndpoint: your_url
+  uploadSaveDir: ./upload/
+  imagePath: ./image/
+  voicePath: ./voice/
+login:
+  redirect_url: your_url
+  mail:
+    mail_map:
+      bot1:
+        host: mail.com
+        port: 587
+        username: test1
+        password: test1
+      bot2:
+        host: mail.com
+        port: 587
+        username: test2
+        password: test2
+      bot3:
+        host: mail.com
+        port: 587
+        username: test3
+        password: test3
